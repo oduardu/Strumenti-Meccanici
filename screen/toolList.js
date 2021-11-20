@@ -1,6 +1,6 @@
 import * as React from "react"
-import { View, Animated, TouchableOpacity, Alert, StyleSheet, ScrollView, Linking, Image } from 'react-native' 
-import { Card, Divider, TextInput, Text, Title, Paragraph, Button, List, FAB, Avatar } from 'react-native-paper'
+import { View, Animated, TouchableOpacity, Alert, StyleSheet, ScrollView, Linking, Image } from 'react-native'
+import { Card, Divider, TextInput, Text, Title, Paragraph, List, Avatar } from 'react-native-paper'
 import firebase from 'firebase'
 import Swipeable from 'react-native-gesture-handler/Swipeable'
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -15,6 +15,9 @@ export default class toolList extends React.Component {
     }
     async componentDidMount() {
         await this.getData();
+        this._unsubscribe = this.props.navigation.addListener('focus', () => {
+            this.getData();
+          });
     }
 
     getData = async () => {
@@ -50,7 +53,6 @@ export default class toolList extends React.Component {
 
     remover = (key) => {
         var ref = firebase.database().ref("ferramenta/" + key);
-
         ref.remove().then(() => {
             console.log("Removido" + key);
         }).catch((error) => {
@@ -64,9 +66,7 @@ export default class toolList extends React.Component {
         if (text != '') {
             const newArray = this.state.ferramentaList.filter((item) => {
                 const itemDado = item.nomeFerramenta ? item.nomeFerramenta.toUpperCase() : ''.toUpperCase();
-                //console.log(text);
                 const textDado = text.toUpperCase();
-
                 return itemDado.indexOf(textDado) > -1;
             });
             this.setState({
@@ -113,7 +113,7 @@ export default class toolList extends React.Component {
                                 transform: [{ scale }]
                             }}>
                             Remover
-                    </Animated.Text>
+                        </Animated.Text>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -132,7 +132,7 @@ export default class toolList extends React.Component {
                                 transform: [{ scale }]
                             }}>
                             Editar
-                    </Animated.Text>
+                        </Animated.Text>
                     </View>
                 </TouchableOpacity>
             </>
@@ -142,69 +142,70 @@ export default class toolList extends React.Component {
 
     render() {
         return (
-            <View style={{backgroundColor: '#FFF'}}>
-            <ScrollView style={{margin:0, alignSelf: 'stretch', backgroundColor: '#FFF'}}>
-            <View style={{flex: 1}}>
-                <View style={{marginTop: 30,flexDirection:"row",width: '100%',alignSelf:'center',backgroundColor: '#FFF'}}>
-                <TextInput
-                    dense='true'
-                    mode='flat'
-                    style={{flex:1,padding:0,backgroundColor: '#FFF'}}
-                    label="Pesquisar"
-                    value={this.state.search}
-                    onChangeText={(text) => this.pesquisar(text)}
-                />
-                <Ionicons name="ios-search" size={30} style={{position: 'absolute', right: 20, top: 10}} />
-                </View>
-                </View>
-                <Card >
-                <Card.Content >
-                <List.Section >
-                {this.state.ferramentaList?.map((item, i) => (
-                <>
-                <Swipeable>
-                <TouchableOpacity>
-                <Title style={{color: '#001219'}}>Ferramenta:</Title>
-                                        <Paragraph style={{textTransform: 'capitalize'}}>{item.nomeFerramenta}</Paragraph>
-                                        <Title>Disponibilidade:</Title>
-                                        <Paragraph>{item.disponibilidade}</Paragraph>
-                                        <View style={{position: 'absolute', marginLeft: 250}}>
-                                        <Image 
-                                        source={{
-                                        uri: item.imagem,
-                                        }}
-                                        style={{
-                                            marginTop: 12,
-                                            borderRadius: 20,
-                                            width: 100,
-                                            height: 100,
-                                            borderColor: '#B98EFF',
-                                            borderWidth: 2
-                                        }}
-                                        />
-                                        </View>
-                                        </TouchableOpacity>
-                                        <Divider style={{marginBottom: 20}} />
-                                    </Swipeable >
-                                </>
-                            ))}
-                        </List.Section>
-                    </Card.Content>
-                </Card>
-            </ScrollView>
-            <View style={{position: 'absolute', top: 825, right: 0}}>
-            <FAB
-                style={styles.fab}
-                small
-                color={'#FFF'}
-                icon="plus"
-                onPress={() => this.props.navigation.navigate("Adicionar Ferramenta")}
-            />
-            </View>
-            </View>
+            <ScrollView style={{ margin: 0, alignSelf: 'stretch', backgroundColor: '#FFF' }}>
+                    <View style={{ flex: 1 }}>
+                        <View style={{ marginTop: 30, flexDirection: "row", width: '100%', alignSelf: 'center', backgroundColor: '#FFF' }}>
+                            <TextInput
+                                dense='true'
+                                mode='flat'
+                                style={{ flex: 1, padding: 0, backgroundColor: '#FFF' }}
+                                label="Pesquisar"
+                                value={this.state.search}
+                                onChangeText={(text) => this.pesquisar(text)}
+                            />
+                            <Ionicons name="ios-search" size={30} style={{ position: 'absolute', right: 20, top: 10 }} />
+                        </View>
+                        <View style={styles.adicionar} >
+                            <Text style={{ flex: 1, padding: 0 }} onPress={() => { this.props.navigation.navigate('Adicionar Ferramenta') }}>
+                                Adicionar Ferramenta
+                            </Text>
+                            <Ionicons name='add-circle-outline' size={20} onPress={() => { this.props.navigation.navigate('Adicionar Ferramenta') }} />
+                        </View>
+                    </View>
+
+                            <List.Section style={{ borderRadius: 30, width: '90%', marginLeft: '5%',}}>
+                                {this.state.ferramentaList?.map((item, i) => (
+                                    <>
+                                        <Swipeable
+                                         style={{marginBottom: '5%', width: '90%'}}>
+                                             <Divider/>
+                                            <TouchableOpacity
+                                            style={{backgroundColor: '#FFF', marginBottom: '5%', borderRadius: 30
+                                    }}
+                                                onPress={() => this.props.navigation.navigate('infoTool', item)}>
+                                                <View style={{backgroundColor: '#FFF', marginBottom: '5%', borderRadius: 30}}>
+                                                <View style={{marginLeft: '5%'}}>
+                                                <Title style={{ color: '#001219' }}>Ferramenta:</Title>
+                                                <Paragraph style={{ textTransform: 'capitalize' }}>{item.nomeFerramenta}</Paragraph>
+                                                <Title>Disponibilidade:</Title>
+                                                <Paragraph>{item.disponibilidade}</Paragraph>
+                                                <View style={{ position: 'absolute', marginLeft: 250 }}>
+                                                    <Image
+                                                        source={{
+                                                            uri: 'data:image/png;base64,'+item.imagem
+                                                        }}
+                                                        style={{
+                                                            marginTop: 12,
+                                                            borderRadius: 20,
+                                                            width: 100,
+                                                            height: 100,
+                                                            borderColor: '#B98EFF',
+                                                            borderWidth: 2
+                                                        }}
+                                                    />
+                                                </View>
+                                                </View>
+                                                </View>
+                                            </TouchableOpacity>
+                                        </Swipeable >
+                                    </>
+                                ))}
+                            </List.Section>
+                            <Divider/>
+                </ScrollView>
         );
     }
-        
+
 }
 
 const styles = StyleSheet.create({
@@ -215,15 +216,23 @@ const styles = StyleSheet.create({
         paddingHorizontal: 24,
         textAlignVertical: 'top',
         width: '100%',
-      },
-    fab: {
-        position: 'absolute',
-        margin: 16,
-        right: 0,
-        backgroundColor: '#B98EFF',
-        color: '#FFF',
-        bottom: 0,
     },
+
+    adicionar: {
+        flexDirection:"row",
+        backgroundColor: '#fff',
+        width: '90%',
+        alignSelf:'center',
+        borderRadius: 10,
+        padding: 10,
+        shadowColor: '#ccc',
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.5,
+        shadowRadius: 10,
+        elevation: 10,
+        marginBottom: 20,
+        marginTop: 20
+      },
 
     topText: {
         fontSize: 18
