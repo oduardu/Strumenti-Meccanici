@@ -11,11 +11,11 @@ const firebaseConfig = {
         appId: "1:788495199353:web:1b9111698f72cba63e38a8"
 };
 
-firebase.initializeApp(firebaseConfig);
-/*if (!firebase.apps.length) {
+
+if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
-  LogBox.ignoreAllLogs();
-  console.disableYellowBox = true;
-}*/
+  // LogBox.ignoreAllLogs();
+  // console.disableYellowBox = true;
+}
 
 export default firebase;

@@ -161,7 +161,6 @@ export default class addTool extends React.Component {
     }
 
     render() {
-        
         const dateTimerPickerView =
             <DateTimePicker
                 testID="dateTimePicker"
@@ -238,11 +237,6 @@ export default class addTool extends React.Component {
                             Selecionar Disponibilidade
                         </Button>
                     </View>
-                    <Text style={{
-                    fontSize: 20,
-                    color: '#B98EFF'
-                }}>{this.state.date ? dataFormatada : ""}</Text>
-
                 </View>
                 <View style={{ alignItems: 'center' }}>
                     <Button style={{ borderRadius: 20, marginTop: 5, width: 300, backgroundColor: '#B98EFF' }} mode="contained" onPress={() => this.salvar()}>

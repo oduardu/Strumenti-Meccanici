@@ -1,6 +1,6 @@
 import * as React from "react"
 import { View, Animated, TouchableOpacity, Alert, StyleSheet, ScrollView, Linking, Image } from 'react-native'
-import { Card, Divider, TextInput, Text, Title, Paragraph, List, Avatar } from 'react-native-paper'
+import { Divider, TextInput, Text, Title, Paragraph, List } from 'react-native-paper'
 import firebase from 'firebase'
 import Swipeable from 'react-native-gesture-handler/Swipeable'
 import Ionicons from 'react-native-vector-icons/Ionicons';

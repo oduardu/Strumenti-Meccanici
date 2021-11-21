@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "MecanicaApp",
-    "slug": "MecanicaApp",
+    "name": "Strumenti Meccanici",
+    "slug": "strumenti-meccanici",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#B98EFF"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -22,8 +22,14 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
+        "backgroundColor": "#B98EFF"
+      }, 
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyA1uFz6nSlIYnglTORtIh108CrtHU2HJv0"
+        }
+      },
+      "package": "com.strumenti.meccanici"
     },
     "web": {
       "favicon": "./assets/favicon.png"
